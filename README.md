@@ -1,2 +1,3 @@
 # yadi
-Yet Another Docker Image
+
+**Y**et **A**nother **D**ocker **I**mage repo
