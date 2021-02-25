@@ -18,7 +18,7 @@ All images are based on their `alpine` versions for lightweight and fast contain
 
 ## Build multi-stage build explained
 
-#### Stage `base`
+### Stage `base`
 
 ```Dockerfile
 # Build target: base #
@@ -41,7 +41,7 @@ COPY package.json package-lock.json yarn.lock /app/
 EXPOSE 3000
 ```
 
-#### Stage `dependencies`
+### Stage `dependencies`
 
 ```Dockerfile
 # Build target dependencies #
@@ -105,7 +105,7 @@ RUN yarn lint && \
     rm -rf node_modules
 ```
 
-#### Stage `production`
+### Stage `production`
 
 ```Dockerfile
 # Build target production #
