@@ -16,7 +16,7 @@ All images are based on their `alpine` versions for lightweight and fast contain
 
 - https://hub.docker.com/_/node
 
-## Build multi-stages explained
+## Build multi-stage build explained
 
 #### Stage `base`
 
@@ -25,6 +25,7 @@ All images are based on their `alpine` versions for lightweight and fast contain
 ######################
 FROM node:14-alpine AS base
 
+# Default directory for all stages
 WORKDIR /app
 
 # We set the only build arg as default ENV
@@ -35,6 +36,6 @@ ENV PATH=/app/node_modules/.bin:$PATH \
 # Copy only the package and lock files to be ready for installation
 COPY package.json package-lock.json yarn.lock /app/
 
-# Expose default port for the container
+# Expose default port for the app
 EXPOSE 3000
 ```
