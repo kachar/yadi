@@ -1,5 +1,5 @@
-# Build target dependencies #
-#############################
+# Build target base #
+#####################
 FROM node:14-alpine AS base
 WORKDIR /app
 ARG NODE_ENV=production
