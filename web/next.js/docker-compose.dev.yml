@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      target: ${TARGET_ENV?}
+      args:
+        NODE_ENV: ${NODE_ENV?}
+
+    ports:
+      - "${APP_PORT?}:3000"
+
+    volumes:
+      # Local:Container mounting points
+      - ./:/app
+      - /app/node_modules
+      - /app/.next
+
+    networks:
+      net-frontend:
+        aliases:
+          - app.yadi.localhost
