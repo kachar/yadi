@@ -120,13 +120,10 @@ FROM base AS production
 # Copy pre-built sources `dist`, `build` or `.next` depending on the framework
 # In this case it's `.next` folder
 COPY --from=builder /app/.next /app/.next
+COPY --from=builder /app/public /app/public
 
 # Copy production dependencies only
 COPY --from=dependencies /prod_node_modules /app/node_modules
-
-# Copy app sources so any additional files are available
-# This can be skipped in some scenarios
-COPY . /app
 
 # Start production server
 CMD [ "yarn", "start" ]
