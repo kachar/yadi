@@ -41,3 +41,5 @@ COPY --from=builder /app/.next /app/.next
 COPY --from=dependencies /prod_node_modules /app/node_modules
 COPY . /app
 CMD [ "yarn", "start" ]
+
+HEALTHCHECK --interval=5s --timeout=5s --retries=3 CMD curl --fail http://localhost:3000 || exit 1
