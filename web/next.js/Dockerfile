@@ -30,16 +30,16 @@ CMD [ "yarn", "dev" ]
 FROM base AS builder
 COPY --from=dependencies /app/node_modules /app/node_modules
 COPY . /app
-RUN yarn lint && \
-    yarn build && \
+RUN yarn build && \
     rm -rf node_modules
 
 # Build target production #
 ###########################
 FROM base AS production
+COPY --from=builder /app/public /app/public
 COPY --from=builder /app/.next /app/.next
 COPY --from=dependencies /prod_node_modules /app/node_modules
-COPY . /app
 CMD [ "yarn", "start" ]
 
-HEALTHCHECK --interval=5s --timeout=5s --retries=3 CMD curl --fail http://localhost:3000 || exit 1
+HEALTHCHECK --interval=5s --timeout=5s --retries=3 \
+    CMD curl --fail http://localhost:3000 || exit 1
