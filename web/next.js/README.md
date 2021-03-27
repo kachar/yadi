@@ -19,6 +19,12 @@ Visit <http://app.yadi.localhost:3070>
 
 ## Environment
 
+Three sample environment files are included in the sample app. Normally only development mode `.env` file should be included in git as others might contain sensitive data.
+
+- `.env`
+- `.env.staging`
+- `.env.prod`
+
 ### Docker Compose
 
 With the `COMPOSE_FILE` we load two linked configurations in development mode.
@@ -39,11 +45,11 @@ The main configuration defines:
 
 #### Development `docker-compose.dev.yml`
 
-Dev configuration extends the main one and adds:
+Dev configuration inherits and extends the main one and adds:
 
+- image build instructions
 - local mounted volumes
 - exposed ports to host machine
-- image build instructions
 - local container hotname (app.yadi.localhost)
 
 ### Application environment
@@ -66,6 +72,8 @@ NODE_ENV=development # development, production
 ### Multi-stage build step
 
 Target environment defines the end stage of the [multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/)
+
+You can read more about the different stages in the main [README.md](https://github.com/kachar/yadi)
 
 ```env
 TARGET_ENV=development # dependencies, development, builder, production
