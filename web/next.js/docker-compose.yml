@@ -1,6 +1,7 @@
 version: "3.8"
 services:
   app:
+    image: ghcr.io/kachar/yadi-app:latest
     container_name: ${COMPOSE_PROJECT_NAME?}-app
     restart: always
 

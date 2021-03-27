@@ -53,8 +53,6 @@ jobs:
           build-args: |
             NODE_ENV=production
           tags: |
-            yadi-app:${{ steps.get-version.outputs.VERSION }}
-            yadi-app:latest
             ghcr.io/kachar/yadi-app:${{ steps.get-version.outputs.VERSION }}
             ghcr.io/kachar/yadi-app:latest
 
