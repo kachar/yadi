@@ -8,9 +8,9 @@ All images are based on their `alpine` versions for lightweight and fast contain
 
 ## Web
 
-- [Next.js](./web/next.js/)
-- [Nest.js](./web/nest.js/)
-- [Create-React-App](./web/create-react-app/)
+- [Next.js Dockerfile + Sample App](./web/next.js/)
+- [Nest.js Dockerfile](./web/nest.js/)
+- [Create-React-App Dockerfile](./web/create-react-app/)
 
 ## Source images
 
@@ -33,6 +33,9 @@ WORKDIR /app
 ARG NODE_ENV=production
 ENV PATH=/app/node_modules/.bin:$PATH \
     NODE_ENV="$NODE_ENV"
+
+# We add `curl` so we can do healthchecks with ease
+RUN apk --no-cache add curl
 
 # Copy only the package and lock files to be ready for installation
 COPY package.json package-lock.json yarn.lock /app/
@@ -127,4 +130,11 @@ COPY . /app
 
 # Start production server
 CMD [ "yarn", "start" ]
+```
+
+### Healthcheck
+
+```Dockerfile
+HEALTHCHECK --interval=5s --timeout=5s --retries=3 \
+    CMD curl --fail http://localhost:3000 || exit 1
 ```
