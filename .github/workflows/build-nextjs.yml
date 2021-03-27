@@ -18,14 +18,16 @@ jobs:
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: |
-            node_modules
+            ./web/next.js/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: yarn
+        working-directory: ./web/next.js
         if: steps.yarn-cache.outputs.cache-hit != 'true'
 
       - name: Build frontend
+        working-directory: ./web/next.js
         run: yarn build
