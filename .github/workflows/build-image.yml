@@ -28,13 +28,35 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.GHCR_TOKEN }}
 
+      - name: Get the latest tag version
+        id: get-version
+        run: |
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+
+          echo $VERSION
+          echo ::set-output name=VERSION::$VERSION
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           push: true
+          target: production
           context: ./web/next.js
-          tags: kachar/yadi-app:latest
+          build-args: |
+            NODE_ENV=production
+          tags: |
+            yadi-app:${{ steps.get-version.outputs.VERSION }}
+            yadi-app:latest
+            ghcr.io/kachar/yadi-app:${{ steps.get-version.outputs.VERSION }}
+            ghcr.io/kachar/yadi-app:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -51,21 +73,6 @@ jobs:
       #       --tag $IMAGE_NAME \
       #       --tag $IMAGE_NAME:ci-run \
       #       .
-
-      # - name: Get the latest tag version
-      #   id: get-version
-      #   run: |
-      #     # Strip git ref prefix from version
-      #     VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-
-      #     # Strip "v" prefix from tag name
-      #     [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-      #     # Use Docker `latest` tag convention
-      #     [ "$VERSION" == "master" ] && VERSION=latest
-
-      #     echo $VERSION
-      #     echo ::set-output name=VERSION::$VERSION
 
       # - name: Push image to GitHub Container Registry
       #   id: push-images-container-registry
